@@ -1,0 +1,84 @@
+LOCAL_PATH := device/lenovo/k10a40
+
+# Architecture — MT6735M is 32-bit only (armv8-a capable cores but no 64-bit userspace)
+TARGET_ARCH := arm
+TARGET_ARCH_VARIANT := armv7-a-neon
+TARGET_CPU_ABI := armeabi-v7a
+TARGET_CPU_ABI2 := armeabi
+TARGET_CPU_VARIANT := cortex-a53
+
+# Platform
+TARGET_BOARD_PLATFORM := mt6735m
+TARGET_BOOTLOADER_BOARD_NAME := mt6735
+
+# Bootloader
+TARGET_NO_BOOTLOADER := true
+
+# Kernel
+# bootopt: 64S3 = SoC supports 64-bit, 32N2 32N2 = both Linux and Android run 32-bit
+BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,32N2 androidboot.selinux=permissive
+BOARD_KERNEL_BASE := 0x40000000
+BOARD_KERNEL_PAGESIZE := 2048
+BOARD_KERNEL_OFFSET := 0x00008000
+BOARD_RAMDISK_OFFSET := 0x04000000
+BOARD_TAGS_OFFSET := 0x0e000000
+BOARD_MKBOOTIMG_ARGS := --kernel_offset $(BOARD_KERNEL_OFFSET) --ramdisk_offset $(BOARD_RAMDISK_OFFSET) --tags_offset $(BOARD_TAGS_OFFSET)
+TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/zImage
+
+# Partitions
+# TODO: verify these against your device via: adb shell cat /proc/partitions
+BOARD_BOOTIMAGE_PARTITION_SIZE      := 16777216
+BOARD_RECOVERYIMAGE_PARTITION_SIZE  := 16777216
+BOARD_SYSTEMIMAGE_PARTITION_SIZE    := 1610612736
+BOARD_USERDATAIMAGE_PARTITION_SIZE  := 4294967296
+BOARD_CACHEIMAGE_PARTITION_SIZE     := 209715200
+BOARD_FLASH_BLOCK_SIZE              := 131072
+
+# Filesystem
+TARGET_USERIMAGES_USE_EXT4 := true
+TARGET_USERIMAGES_USE_F2FS := true
+BOARD_HAS_LARGE_FILESYSTEM := true
+
+# Storage
+BOARD_SUPPRESS_SECURE_ERASE := true
+RECOVERY_SDCARD_ON_DATA := true
+BOARD_HAS_NO_SELECT_BUTTON := true
+
+# Recovery fstab
+TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/recovery.fstab
+
+# TWRP
+TW_THEME := portrait_hdpi
+RECOVERY_GRAPHICS_USE_LINELENGTH := true
+TW_BRIGHTNESS_PATH := /sys/class/leds/lcd-backlight/brightness
+TW_MAX_BRIGHTNESS := 255
+TW_DEFAULT_BRIGHTNESS := 128
+TW_CUSTOM_CPU_TEMP_PATH := /sys/devices/virtual/thermal/thermal_zone1/temp
+TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/class/android_usb/android0/f_mass_storage/lun/file
+TW_INTERNAL_STORAGE_PATH := "/data/media/0"
+TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
+TW_EXTERNAL_STORAGE_PATH := "/external_sd"
+TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sd"
+TW_DEFAULT_EXTERNAL_STORAGE := true
+TW_INCLUDE_NTFS_3G := true
+TW_INCLUDE_FUSE_EXFAT := true
+TW_INCLUDE_FUSE_F2FS := true
+TW_MTP_DEVICE := /dev/mtp_usb
+TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
+TW_NO_BATT_PERCENT := false
+TW_NO_REBOOT_BOOTLOADER := false
+TW_NO_REBOOT_RECOVERY := false
+TW_HAS_DOWNLOAD_MODE := true
+TW_INPUT_BLACKLIST := "hbtp_vm"
+BOARD_RECOVERY_NEEDS_BRIGHTNESS := true
+
+# MediaTek
+BOARD_USES_MTK_HARDWARE := true
+BOARD_MTK_RECOVERY_CONFIG := true
+
+# Crypto — k10a40 is unencrypted
+TW_INCLUDE_CRYPTO := false
+
+# USB VID/PID — MediaTek default
+TW_USB_VID := 0E8D
+TW_USB_PID := 2008

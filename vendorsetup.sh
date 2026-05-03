@@ -1,0 +1,2 @@
+add_lunch_combo omni_k10a40-eng
+add_lunch_combo omni_k10a40-userdebug
